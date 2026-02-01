@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map Settings - Gathering Storm</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Courier+Prime&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: row;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            background-color: #f4e4bc;
+            color: #2c241b;
+        }
+
+        #config-sidebar {
+            width: 350px;
+            padding: 20px;
+            box-sizing: border-box;
+            background: #f4e4bc;
+            border-right: 2px solid #2c241b;
+            box-shadow: 10px 0 20px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #preview-container {
+            flex-grow: 1;
+            position: relative;
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: 24px;
+        }
+
+        .control-group {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed rgba(44, 36, 27, 0.3);
+        }
+
+        .control-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .value-display {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.9em;
+        }
+
+        .buttons {
+            margin-top: auto;
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px;
+            font-family: 'Playfair Display', serif;
+            font-weight: bold;
+            cursor: pointer;
+            border: 2px solid #2c241b;
+            background: transparent;
+            color: #2c241b;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background: #2c241b;
+            color: #f4e4bc;
+        }
+
+        button.primary {
+            background: #2c241b;
+            color: #f4e4bc;
+        }
+
+        button.primary:hover {
+            background: #4a3e30;
+        }
+
+        select {
+            width: 100%;
+            padding: 8px;
+            font-family: 'Courier Prime', monospace;
+            background: #fdf6e3;
+            border: 1px solid #2c241b;
+            color: #2c241b;
+        }
+
+        /* Overlay for the parchment texture on preview */
+        .texture-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 500;
+            opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+    </style>
+</head>
+
+<body class="parchment">
+    <div id="config-sidebar">
+        <h1>Map Settings</h1>
+
+        <div class="control-group">
+            <label>Map Style (Theme)</label>
+            <div class="row">
+                <select id="provider-select">
+                    <!-- Options populated via JS -->
+                </select>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label>Default Zoom Level</label>
+            <div class="row">
+                <input type="range" id="zoom-slider" min="1" max="18" value="8">
+                <span id="zoom-value" class="value-display">8</span>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label>Invert Colors (Ink Mode)</label>
+            <div class="row">
+                <span>Black on Light</span>
+                <input type="checkbox" id="invert-check">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label>Parchment Tint (Sepia)</label>
+            <div class="row">
+                <input type="range" id="sepia-slider" min="0" max="100" value="100">
+                <span id="sepia-value" class="value-display">100%</span>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label>Hue Rotate (Color Shift)</label>
+            <div class="row">
+                <input type="range" id="hue-slider" min="0" max="360" value="0">
+                <span id="hue-value" class="value-display">0deg</span>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label>Contrast</label>
+            <div class="row">
+                <input type="range" id="contrast-slider" min="50" max="200" value="50">
+                <span id="contrast-value" class="value-display">50%</span>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label>Brightness</label>
+            <div class="row">
+                <input type="range" id="brightness-slider" min="50" max="150" value="69">
+                <span id="brightness-value" class="value-display">69%</span>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <button onclick="window.location.href='index.html'">Cancel</button>
+            <button id="save-button" class="primary">Save & Return</button>
+        </div>
+    </div>
+
+    <div id="preview-container">
+        <div id="map"></div>
+        <div class="texture-overlay"></div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="data.js"></script>
+    <script src="map_config.js"></script>
+</body>
+
+</html>

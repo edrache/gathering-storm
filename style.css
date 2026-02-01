@@ -1,0 +1,445 @@
+:root {
+    --bg-color: #f4e4bc;
+    --text-color: #2c241b;
+    --accent-color: #003366;
+    /* Deep Ink Blue */
+    --accent-secondary: #8b0000;
+    /* Deep Red for danger/important */
+    --glass-bg: rgba(244, 228, 188, 0.9);
+    /* Parchment color */
+    --glass-border: 1px solid rgba(44, 36, 27, 0.2);
+    --panel-padding: 1.5rem;
+    --radius: 4px;
+    /* Sharper corners for paper feel */
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Courier Prime', monospace;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    /* Paper Grain Overlay */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+}
+
+h1,
+h2,
+h3 {
+    font-family: 'Playfair Display', serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* --- Screens --- */
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    flex-direction: column;
+}
+
+.screen.active {
+    display: flex;
+}
+
+/* --- Setup Screen --- */
+#setup-screen {
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle at center, #f4e4bc 0%, #d4c49c 100%);
+    text-align: center;
+}
+
+#setup-screen h1 {
+    font-size: 4rem;
+    color: var(--text-color);
+    border-bottom: 3px double var(--text-color);
+    margin-bottom: 0.5rem;
+    padding-bottom: 1rem;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: #554433;
+    margin-bottom: 3rem;
+    font-style: italic;
+    font-family: 'Playfair Display', serif;
+}
+
+.config-panel {
+    background: var(--glass-bg);
+    padding: 2rem;
+    border: 2px solid var(--text-color);
+    box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.1);
+}
+
+.stepper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.stepper button {
+    background: none;
+    border: 2px solid var(--text-color);
+    color: var(--text-color);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.5rem;
+    transition: all 0.2s;
+}
+
+.stepper button:hover {
+    background: var(--text-color);
+    color: var(--bg-color);
+}
+
+
+/* --- Language Selector --- */
+.language-selector {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    gap: 10px;
+}
+
+.language-selector button {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-muted);
+    padding: 6px 12px;
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+    backdrop-filter: blur(5px);
+}
+
+.language-selector button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-bright);
+    border-color: var(--accent-primary);
+}
+
+.language-selector button.active {
+    background: var(--accent-primary);
+    color: #000;
+    border-color: var(--accent-primary);
+}
+
+/* --- Map --- */
+#map-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    overflow: hidden;
+    background: #e0d0b0;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+    /* Invert dark map to get black lines on white, then sepia it for parchment look */
+    filter: invert(1) sepia(0.8) contrast(1.2) brightness(0.8);
+}
+
+#drawing-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: crosshair;
+    pointer-events: auto;
+    /* Enable drawing */
+    z-index: 1000;
+    /* Above map */
+}
+
+/* --- UI Panels --- */
+.ui-panel {
+    position: absolute;
+    background: var(--glass-bg);
+    border: 2px solid var(--text-color);
+    border-radius: var(--radius);
+    padding: 1rem;
+    z-index: 2000;
+    /* Above canvas */
+    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.15);
+}
+
+/* Toolbar */
+.toolbar {
+    top: 20px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 60px;
+    align-items: center;
+}
+
+.tool-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.tool-btn {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--text-color);
+    background: transparent;
+    color: var(--text-color);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: background 0.2s;
+}
+
+.tool-btn:hover,
+.tool-btn.active {
+    background: var(--text-color);
+    color: var(--bg-color);
+}
+
+.tool-btn.danger:hover {
+    background: var(--accent-secondary);
+    color: white;
+    border-color: var(--accent-secondary);
+}
+
+.colors {
+    padding-top: 0.5rem;
+    border-top: 1px dotted var(--text-color);
+}
+
+.color-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+}
+
+.color-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Phase Panel */
+.phase-panel {
+    top: 20px;
+    right: 20px;
+    width: 350px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.phase-panel h2 {
+    color: var(--text-color);
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--text-color);
+    padding-bottom: 0.5rem;
+    font-size: 1.4rem;
+}
+
+.scrollable {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.prompt-box {
+    margin-top: 1rem;
+    background: rgba(0, 0, 0, 0.03);
+    padding: 0.8rem;
+    border-left: 4px solid var(--accent-secondary);
+    border-radius: 0;
+    font-style: italic;
+}
+
+/* Players List */
+.players-panel {
+    bottom: 20px;
+    left: 20px;
+    max-width: 300px;
+}
+
+.player-item {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    padding: 0.3rem;
+    border-bottom: 1px dotted var(--text-color);
+}
+
+.player-role {
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+.player-secret {
+    color: #665544;
+    font-size: 0.8rem;
+}
+
+/* Buttons */
+.btn-primary {
+    background: var(--text-color);
+    color: var(--bg-color);
+    border: 2px solid var(--text-color);
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.2);
+    font-family: 'Playfair Display', serif;
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.btn-primary:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+}
+
+.btn-secondary {
+    background: transparent;
+    border: 2px solid var(--text-color);
+    color: var(--text-color);
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    font-weight: bold;
+    font-family: 'Playfair Display', serif;
+    transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+    background: var(--text-color);
+    color: var(--bg-color);
+}
+
+/* Card Area */
+.card-area {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    z-index: 3000;
+}
+
+.card-area.hidden {
+    display: none;
+}
+
+.card-area * {
+    pointer-events: auto;
+}
+
+.card-slot {
+    width: 220px;
+    height: 320px;
+    perspective: 1000px;
+}
+
+.card {
+    width: 100%;
+    height: 100%;
+    background: #fffbf0;
+    border-radius: 8px;
+    border: 1px solid #999;
+    color: #000;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+    font-family: 'Playfair Display', serif;
+    animation: slideUp 0.5s ease-out;
+}
+
+.card-suit {
+    font-size: 3rem;
+    line-height: 1;
+}
+
+.card-text {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    font-family: 'Courier Prime', monospace;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.suit-red {
+    color: #8b0000;
+}
+
+.suit-black {
+    color: #000;
+}
+
+.btn-action {
+    background: var(--accent-secondary);
+    color: #fff;
+    border: 2px solid var(--accent-secondary);
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: 'Playfair Display', serif;
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+}
+
+.btn-action:hover {
+    background: #660000;
+    border-color: #660000;
+}
+
+/* Utility */
+.hidden {
+    display: none !important;
+}

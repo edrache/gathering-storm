@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gathering Storm - Digital Tabletop</title>
+    <!-- Fonts: Playfair Display (Headers), Courier Prime (Typewriter/Body), Inter (UI) -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Courier+Prime&family=Inter:wght@300;400;600&family=Playfair+Display:wght@700&display=swap"
+        rel="stylesheet">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Language Selector (Fixed Top Right) -->
+    <div class="language-selector">
+        <button onclick="setLanguage('en')">EN</button>
+        <button onclick="setLanguage('pl')">PL</button>
+    </div>
+
+    <!-- Start Screen Config -->
+    <div id="setup-screen" class="screen active">
+        <h1 id="setup-title">GATHERING STORM</h1>
+        <p id="setup-subtitle" class="subtitle">A game of rebuilding a community</p>
+
+        <div class="config-panel">
+            <label id="player-count-label" for="player-count">Number of Players:</label>
+            <div class="stepper">
+                <button onclick="changePlayerCount(-1)">-</button>
+                <span id="player-count-display">3</span>
+                <button onclick="changePlayerCount(1)">+</button>
+            </div>
+
+            <div style="display: flex; gap: 10px; justify-content: center; margin-top: 2rem;">
+                <button id="btn-start" class="btn-primary" onclick="startGame()">INITIALIZE MAP</button>
+                <button id="btn-settings" class="btn-secondary" onclick="window.location.href='map_config.html'">MAP
+                    SETTINGS</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Game Interface -->
+    <div id="game-screen" class="screen">
+
+        <!-- Map Layer -->
+        <div id="map-container">
+            <div id="map"></div>
+            <canvas id="drawing-canvas"></canvas>
+        </div>
+
+        <!-- Toolbar (Top Left) -->
+        <div class="ui-panel toolbar">
+            <div class="tool-group">
+                <button class="tool-btn active" onclick="setTool('brush')" title="Brush">✎</button>
+                <button class="tool-btn" onclick="setTool('eraser')" title="Eraser">⌫</button>
+            </div>
+            <div class="tool-group colors">
+                <button class="color-btn" style="background:#fff" onclick="setColor('#ffffff')"></button>
+                <button class="color-btn" style="background:#00ffcc" onclick="setColor('#00ffcc')"></button>
+                <button class="color-btn" style="background:#ff3366" onclick="setColor('#ff3366')"></button>
+                <button class="color-btn" style="background:#000" onclick="setColor('#000000')"></button>
+            </div>
+            <button class="tool-btn danger" onclick="clearCanvas()" title="Clear Canvas">🗑</button>
+        </div>
+
+        <!-- Phase Info Panel (Top Right) -->
+        <div class="ui-panel phase-panel">
+            <h2 id="phase-title">PHASE TITLE</h2>
+            <div id="phase-content" class="scrollable">
+                <p id="phase-text">Phase description goes here...</p>
+                <div id="phase-prompt" class="prompt-box">
+                    <strong>Action:</strong> <span id="prompt-text">Do something...</span>
+                </div>
+            </div>
+            <button id="btn-next-phase" class="btn-secondary" onclick="nextPhase()">NEXT PHASE ➔</button>
+        </div>
+
+        <!-- Card Dislay (Bottom Center) -->
+        <div id="card-area" class="card-area hidden">
+            <div class="card-slot" id="current-card">
+                <div class="card-back"></div>
+                <!-- Card Front will be injected here -->
+            </div>
+            <div class="card-controls">
+                <button id="btn-draw" class="btn-action" onclick="drawCard()">DRAW CARD</button>
+            </div>
+        </div>
+
+        <!-- Players List (Bottom Left) -->
+        <div class="ui-panel players-panel">
+            <h3 id="community-title">COMMUNITY</h3>
+            <div id="players-list">
+                <!-- Player items injected via JS -->
+            </div>
+        </div>
+
+    </div>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
