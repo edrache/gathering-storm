@@ -177,6 +177,68 @@ h3 {
     /* Above map */
 }
 
+.map-marker-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.map-x {
+    font-family: 'Playfair Display', serif;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: var(--text-color);
+    line-height: 1;
+}
+
+.map-label {
+    background: none;
+    border: none;
+    box-shadow: none;
+    font-family: 'Playfair Display', serif;
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: var(--text-color);
+    text-shadow: 1px 1px 0px var(--bg-color), -1px -1px 0px var(--bg-color), 1px -1px 0px var(--bg-color), -1px 1px 0px var(--bg-color);
+    white-space: nowrap;
+    margin-bottom: 2px;
+    text-align: center;
+}
+
+/* Floating Input Overlay */
+#text-input-overlay {
+    position: fixed;
+    z-index: 5000;
+    display: none;
+    background: var(--glass-bg);
+    border: 2px solid var(--text-color);
+    padding: 0.4rem;
+    border-radius: var(--radius);
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+    transform: translate(-50%, -100%);
+    /* Center horizontally and place above origin */
+    margin-top: -15px;
+    /* Offset from the X */
+}
+
+#text-input-overlay input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--text-color);
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--text-color);
+    outline: none;
+    width: 150px;
+    text-align: center;
+}
+
+#drawing-canvas.text-tool-active {
+    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' style='fill:black;font-family:serif;font-weight:bold;font-size:14px;'><text x='0' y='14'>X</text></svg>") 8 8, crosshair;
+}
+
 /* --- UI Panels --- */
 .ui-panel {
     position: absolute;
@@ -255,6 +317,11 @@ h3 {
     max-height: 80vh;
     display: flex;
     flex-direction: column;
+}
+
+.phase-controls {
+    display: flex;
+    gap: 10px;
 }
 
 .phase-panel h2 {
@@ -374,20 +441,35 @@ h3 {
 .card {
     width: 100%;
     height: 100%;
-    background: #fffbf0;
-    border-radius: 8px;
-    border: 1px solid #999;
-    color: #000;
-    padding: 1rem;
+    background: #fff;
+    background-image:
+        linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+    border-radius: 4px;
+    border: 3px double var(--text-color);
+    color: var(--text-color);
+    padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     text-align: center;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 10px 10px 0px rgba(0, 0, 0, 0.1);
     position: relative;
     font-family: 'Playfair Display', serif;
-    animation: slideUp 0.5s ease-out;
+    animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    pointer-events: none;
 }
 
 .card-suit {
@@ -415,11 +497,11 @@ h3 {
 }
 
 .suit-red {
-    color: #8b0000;
+    color: var(--accent-secondary);
 }
 
 .suit-black {
-    color: #000;
+    color: var(--text-color);
 }
 
 .btn-action {
@@ -442,4 +524,220 @@ h3 {
 /* Utility */
 .hidden {
     display: none !important;
+}
+
+/* --- Draggable Panels & Truths --- */
+.draggable-panel {
+    position: absolute;
+    top: 200px;
+    left: 20px;
+    width: 320px;
+    z-index: 1000;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    max-height: 500px;
+    transition: max-height 0.3s ease;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.drag-handle {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px 15px;
+    cursor: grab;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    color: var(--text-color);
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+}
+
+.toggle-btn {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toggle-btn:hover {
+    opacity: 0.7;
+}
+
+.panel-content {
+    padding: 15px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--text-color);
+    opacity: 0.9;
+}
+
+.panel-content ul {
+    margin: 0;
+    padding-left: 1.2rem;
+}
+
+.panel-content li {
+    margin-bottom: 12px;
+}
+
+.panel-content li:last-child {
+    margin-bottom: 0;
+}
+
+.draggable-panel.collapsed {
+    max-height: 44px;
+}
+
+.draggable-panel.collapsed .panel-content {
+    display: none;
+}
+
+/* --- Tags System --- */
+#active-tags-bar {
+    position: absolute;
+    top: 5px;
+    left: 80px;
+    /* Offset from toolbar */
+    right: 390px;
+    /* Offset from phase panel */
+    padding: 10px;
+    z-index: 2500;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    pointer-events: none;
+}
+
+#active-tags-bar .tag {
+    pointer-events: auto;
+    background: var(--glass-bg);
+    border: 1px solid var(--text-color);
+    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
+    font-size: 0.8rem;
+    padding: 4px 10px;
+}
+
+.tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.tag {
+    background: transparent;
+    border: 1px solid var(--text-color);
+    color: var(--text-color);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
+    white-space: nowrap;
+}
+
+.tag:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.tag.selected {
+    background: var(--accent-color);
+    color: white;
+    border-color: var(--accent-color);
+}
+
+.tag.custom-tag-btn {
+    border-style: dashed;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.tag.custom-tag-btn:hover {
+    background: rgba(255, 255, 255, 0.5);
+    border-style: solid;
+}
+
+/* --- Settlement Specifics --- */
+.settlement-marker-active #drawing-canvas {
+    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z'></path><circle cx='12' cy='10' r='3'></circle></svg>") 16 32, crosshair;
+}
+
+.map-settlement-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    /* Align to bottom */
+    pointer-events: none !important;
+}
+
+.leaflet-marker-icon.map-settlement-container {
+    overflow: visible;
+}
+
+.map-settlement-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    justify-content: center;
+    max-width: 250px;
+    margin-bottom: 4px;
+}
+
+.map-settlement-label {
+    background: var(--glass-bg);
+    border: 1px solid var(--text-color);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-family: 'Playfair Display', serif;
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: var(--text-color);
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 0;
+    /* Align directly above the pin */
+    backdrop-filter: blur(5px);
+    pointer-events: auto;
+    /* Enable clicking on the label */
+}
+
+.settlement-name {
+    line-height: 1.2;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.settlement-name:hover {
+    color: var(--accent-secondary);
+}
+
+.map-settlement-tag {
+    background: var(--accent-color);
+    color: white;
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 12px;
+    white-space: nowrap;
+}
+
+/* Visibility Control */
+.visibility-btn.hidden-state {
+    opacity: 0.5;
 }

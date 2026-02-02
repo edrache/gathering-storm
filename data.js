@@ -16,35 +16,35 @@ const DATA = {
                 title: 'OUR LAND',
                 text: "First we’ll describe a far-away world. We’ll take a few minutes to choose or invent five aspects of the local environment, while we **draw them** on our screen. What does our land look like? What are the main features?",
                 prompt: "Draw 5 aspects of the local environment.",
-                suggestions: "Red dust landscape, twin moons, low mist, shimmering haze, jagged rock, rolling fields, verdant crops, bioluminescent moss..."
+                suggestions: "Red dust landscape, twin moons, low mist, shimmering haze, jagged rock, rolling fields, verdant crops, bioluminescent moss, deep jungle, angular craft, drifting clouds, blazing sun, cool breeze, rolling rivers, wind turbines, smooth forms, curved chrome, orange sky, smoking vents, cool streams, vivid flowers, churned-up tracks, crystal growths, sprawling roots, quiet ruins, murky swamp, heavy heat, canopy, intense scent, birdsong, silence, dappled light, heavy rain, teeming with life, deserted, sweet odour, quietude, wilds, fluorescent lighting, grasping vines, multichromatic haze, strange critters, large beasts"
             },
             {
                 id: 'settlement',
                 title: 'SETTLEMENT',
                 text: "Now we’ll **draw a settlement** somewhere suitable in the middle of the map. As we draw, we’ll give the settlement a **name**. What does it look like?",
                 prompt: "Draw the settlement in the middle.",
-                suggestions: "Spherical dwellings, cuboid forms, fractal architecture, clean lines, organic forms..."
+                suggestions: "spherical dwellings, cuboid forms, fractal architecture, clean lines, organic forms, elevated homes, dusty bioshells, holograms, crystal structures, smooth stone, modular buildings, vine-covered, blazing lights, subtle glow, grown from the earth, built of metal, deep caves"
             },
             {
                 id: 'who-we-are',
                 title: 'WHO WE ARE',
                 text: "Now let’s take a few minutes to choose or invent three aspects of **who we are**.",
                 prompt: "Discuss: What do we look like? What do we do together? How do we live together?",
-                suggestions: "Large, small, hairy, smooth, reptilian, mammalian, vegetal, fungal..."
+                suggestions: "large, small, hairy, smooth, reptilian, mammalian, vegetal, fungal, amphibian, lithe, ponderous, loud, quiet, eating, drinking, dancing, signing, playing, fighting, debating, painting, looking, reading, cooking, building, writing, storytelling, burrowing, bathing"
             },
             {
                 id: 'our-area',
                 title: 'OUR AREA',
                 text: "We’ll take turns to **draw and describe** three more sites.",
                 prompt: "Draw 3 more sites (e.g., Dark Forest, Winding River). Note names if people live there.",
-                suggestions: "Dark Forest, Winding River, Verdant Highlands, Hermitage Shack, Rebel Base..."
+                suggestions: "Dark Forest, Winding River, Verdant Highlands, Hermitage Shack, Rebel Base, Cursed Place, Fathomless Caves, Scorched Lands, Great Mountains, Deserted homesteads"
             },
             {
                 id: 'authority',
                 title: 'THE AUTHORITY',
                 text: "Now let’s choose or invent three aspects of the Authority. We’ll **draw their Abandoned Headquarters** on the map.",
                 prompt: "Draw the Authority's Abandoned Headquarters.",
-                suggestions: "Large, small, hairy, smooth, reptilian..."
+                suggestions: "large, small, hairy, smooth, reptilian, mammalian, vegetal, fungal, amphibian, lithe, ponderous, loud, quiet, eating, drinking, dancing, signing, playing, fighting, debating, painting, looking, reading, cooking, building, writing, storytelling, burrowing, bathing"
             },
             {
                 id: 'authority-influence',
@@ -58,14 +58,14 @@ const DATA = {
                 title: 'REMNANTS',
                 text: "What has the Authority left behind? We’ll **draw some features** on the Map.",
                 prompt: "Draw remnants of the Authority.",
-                suggestions: "Strange creature, intricate flower, deserted camp, something hidden..."
+                suggestions: "strange creature, intricate flower, deserted camp, something hidden, something forgotten, stacks of cans, machinery, packed containers, uniforms, rotting fruit, vast hangars, maze of boxes, piles of papers, abandoned complex, wreckage, tubs of poison, agricultural machinery, tattered tarps, someone’s diary, mould and spores, web-covered furniture, photographs in cracked frames, moss and lichen, inscrutable technology, empty storerooms, wardrobe of clothes, burnt documents, abandoned outposts, defunct Authority branding, canned alien fruit, wrecked spaceships, rusted bolts, vats of poisons, clunky machines"
             },
             {
                 id: 'alien-fruit',
                 title: 'ALIEN FRUIT',
                 text: "Let’s choose or invent three aspects of this **alien fruit**. We’ll **draw the fruit**, and then **draw the Vast Plantation**.",
                 prompt: "Draw the Alien Fruit and the Vast Plantation.",
-                suggestions: "Sweet, sour, nourishing, aromatic, addictive, psychotropic..."
+                suggestions: "Sweet, sour, nourishing, aromatic, addictive, psychotropic, stinky, juicy, sharp, smooth, delicious, pungent, deadly, restorative, substantial, succulent, buttery, luscious, fleshy, gourd-like, berry, bean, plump, shriveled, creamy, fragrant, moist, pulpy, seeded, tangy"
             },
             {
                 id: 'characters-secrets',
@@ -163,10 +163,13 @@ const DATA = {
             drawBtn: "DRAW CARD",
             communityTitle: "COMMUNITY",
             secretLabel: "Secret: ???",
-            confirmClear: "Clear all drawings?",
+            confirmClear: "Clear all drawings and text?",
             deckEmpty: "Deck Empty!",
             gameOver: "The story continues in the Oracle phase until the Ace of Spades is drawn.",
-            gameEndTrigger: "GAME END TRIGGER!"
+            gameEndTrigger: "GAME END TRIGGER!",
+            textTool: "Text",
+            textPrompt: "Enter label text:",
+            truthsTitle: "TRUTHS"
         }
     },
     PL: {
@@ -186,35 +189,35 @@ const DATA = {
                 title: 'NASZA KRAINA',
                 text: "Najpierw opiszemy odległy świat. Poświęćmy kilka minut na wybranie lub wymyślenie pięciu aspektów lokalnego środowiska, jednocześnie rysując je na naszym ekranie. Jak wygląda nasza kraina? Jakie są jej główne cechy?",
                 prompt: "Narysuj 5 aspektów lokalnego środowiska.",
-                suggestions: "Czerwony pył, bliźniacze księżyce, niska mgła, lśniąca mgiełka, poszarpane skały, faliste pola, bujne plony, bioluminescencyjny mech..."
+                suggestions: "Czerwony pył, bliźniacze księżyce, niska mgła, lśniąca mgiełka, poszarpane skały, faliste pola, bujne plony, bioluminescencyjny mech, głęboka dżungla, kanciaste statki, dryfujące chmury, prażące słońce, chłodny powiew, płynące rzeki, turbiny wiatrowe, gładkie kształty, zakrzywiony chrom, pomarańczowe niebo, dymiące otwory wentylacyjne, chłodne strumienie, jaskrawe kwiaty, rozjeżdżone ślady, kryształowe narośla, rozległe korzenie, ciche ruiny, mętne bagno, ciężki upał, sklepienie lasu, intensywny zapach, śpiew ptaków, cisza, nakrapiane światło, ulewny deszcz, tętniące życiem, opustoszałe, słodki zapach, bezruch, dzicz, fluorescencyjne oświetlenie, chwytne pnącza, wielobarwna mgła, dziwne stworzenia, wielkie bestie"
             },
             {
                 id: 'settlement',
                 title: 'OSADA',
                 text: "Teraz narysujemy osadę w odpowiednim miejscu na środku mapy. Rysując, nadamy jej nazwę. Jak ona wygląda?",
                 prompt: "Narysuj osadę na środku mapy.",
-                suggestions: "Sferyczne domostwa, kuboidy, architektura fraktalna, czyste linie, organiczne formy..."
+                suggestions: "sferyczne domostwa, kuboidy, architektura fraktalna, czyste linie, organiczne formy, wyniesione domy, zakurzone biopowłoki, hologramy, kryształowe struktury, gładki kamień, budynki modułowe, porośnięte pnączami, oślepiające światła, subtelny blask, wyrosłe z ziemi, zbudowane z metalu, głębokie jaskinie"
             },
             {
                 id: 'who-we-are',
                 title: 'KIM JESTEŚMY',
                 text: "Poświęćmy kilka minut na wybranie lub wymyślenie trzech aspektów tego, kim jesteśmy.",
                 prompt: "Podyskutujcie: Jak wyglądamy? Co robimy razem? Jak wspólnie żyjemy?",
-                suggestions: "Wielcy, mali, owłosieni, gładcy, gadzi, ssakopodobni, roślinni, grzybowi..."
+                suggestions: "wielcy, mali, owłosieni, gładcy, gadzi, ssakopodobni, roślinni, grzybowi, płazy, gibcy, powolni, głośni, cisi, jedzenie, picie, taniec, miganie, zabawa, walka, debata, malowanie, obserwacja, czytanie, gotowanie, budowanie, pisanie, opowiadanie historii, kopanie nor, kąpiel"
             },
             {
                 id: 'our-area',
                 title: 'NASZA OKOLICA',
                 text: "Na zmianę rysujcie i opisujcie trzy kolejne miejsca.",
                 prompt: "Narysuj 3 kolejne miejsca (np. Mroczny Las, Kręta Rzeka). Zapisz nazwy, jeśli ktoś tam mieszka.",
-                suggestions: "Mroczny Las, Kręta Rzeka, Bujne Wyżyny, Chata Pustelnika, Baza Rebeliantów..."
+                suggestions: "Mroczny Las, Kręta Rzeka, Bujne Wyżyny, Chata Pustelnika, Baza Rebeliantów, Przeklęte Miejsce, Bezkresne Jaskinie, Wypalona Ziemia, Wielkie Góry, Opuszczone gospodarstwa"
             },
             {
                 id: 'authority',
                 title: 'WŁADZA',
                 text: "Teraz wybierzmy lub wymyślmy trzy aspekty Władzy. Narysujemy ich Porzuconą Kwaterę Główną na mapie.",
                 prompt: "Narysuj Porzuconą Kwaterę Główną Władzy.",
-                suggestions: "Wielcy, mali, owłosieni, gładcy, gadzi..."
+                suggestions: "wielcy, mali, owłosieni, gładcy, gadzi, ssakopodobni, roślinni, grzybowi, płazy, gibcy, powolni, głośni, cisi, jedzenie, picie, taniec, miganie, zabawa, walka, debata, malowanie, obserwacja, czytanie, gotowanie, budowanie, pisanie, opowiadanie historii, kopanie nor, kąpiel"
             },
             {
                 id: 'authority-influence',
@@ -228,14 +231,14 @@ const DATA = {
                 title: 'POZOSTAŁOŚCI',
                 text: "Co Władza zostawiła po sobie? Narysujemy kilka elementów na Mapie.",
                 prompt: "Narysuj pozostałości po Władzy.",
-                suggestions: "Dziwne stworzenie, misterny kwiat, opuszczony obóz, coś ukrytego..."
+                suggestions: "dziwne stworzenie, misterny kwiat, opuszczony obóz, coś ukrytego, coś zapomnianego, stosy puszek, maszyny, zapakowane kontenery, mundury, gnijące owoce, ogromne hangary, labirynt pudeł, stosy papierów, porzucony kompleks, wrak, beczki z trucizną, maszyny rolnicze, poszarpane plandeki, czyjś pamiętnik, pleśń i zarodniki, meble pokryte pajęczyną, fotografie w pękniętych ramkach, mech i porosty, niezrozumiała technologia, puste magazyny, szafa z ubraniami, spalone dokumenty, porzucone placówki, wyblakłe logo Władzy, obcy owoc w puszce, rozbite statki kosmiczne, zardzewiałe śruby, kadzie z truciznami, toporne maszyny"
             },
             {
                 id: 'alien-fruit',
                 title: 'OBCY OWOC',
                 text: "Wybierzmy lub wymyślmy trzy aspekty tego obcego owocu. Narysujemy owoc, a następnie narysujemy Wielką Plantację.",
                 prompt: "Narysuj Obcy Owoc i Wielką Plantację.",
-                suggestions: "Słodki, kwaśny, pożywny, aromatyczny, uzależniający, psychotropowy..."
+                suggestions: "Słodki, kwaśny, pożywny, aromatyczny, uzależniający, psychotropowy, śmierdzący, soczysty, ostry, gładki, pyszny, gryzący, zabójczy, regenerujący, sycący, wyborny, maślany, luksusowy, mięsisty, przypominający tykwę, jagoda, fasola, pękaty, pomarszczony, kremowy, wonny, wilgotny, włóknisty, z pestkami, cierpki"
             },
             {
                 id: 'characters-secrets',
@@ -333,10 +336,13 @@ const DATA = {
             drawBtn: "DOBIERZ KARTĘ",
             communityTitle: "SPOŁECZNOŚĆ",
             secretLabel: "Tajemnica: ???",
-            confirmClear: "Wyczyścić wszystkie rysunki?",
+            confirmClear: "Wyczyścić wszystkie rysunki i napisy?",
             deckEmpty: "Talia pusta!",
             gameOver: "Historia trwa w fazie Wyroczni, aż do wyciągnięcia Asa Pik.",
-            gameEndTrigger: "ZAKOŃCZENIE GRY!"
+            gameEndTrigger: "ZAKOŃCZENIE GRY!",
+            textTool: "Tekst",
+            textPrompt: "Wpisz treść etykiety:",
+            truthsTitle: "PRAWDY"
         }
     },
     LAND_SEEDS: [

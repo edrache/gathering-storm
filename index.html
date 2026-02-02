@@ -55,6 +55,8 @@
 
         <!-- Map Layer -->
         <div id="map-container">
+            <!-- Active Tags Bar (Top) -->
+            <div id="active-tags-bar"></div>
             <div id="map"></div>
             <canvas id="drawing-canvas"></canvas>
         </div>
@@ -62,7 +64,9 @@
         <!-- Toolbar (Top Left) -->
         <div class="ui-panel toolbar">
             <div class="tool-group">
+                <button class="tool-btn" onclick="setTool('move')" id="btn-tool-move" title="Move Tool">✥</button>
                 <button class="tool-btn active" onclick="setTool('brush')" title="Brush">✎</button>
+                <button class="tool-btn" onclick="setTool('text')" id="btn-tool-text" title="Text">T</button>
                 <button class="tool-btn" onclick="setTool('eraser')" title="Eraser">⌫</button>
             </div>
             <div class="tool-group colors">
@@ -71,7 +75,11 @@
                 <button class="color-btn" style="background:#ff3366" onclick="setColor('#ff3366')"></button>
                 <button class="color-btn" style="background:#000" onclick="setColor('#000000')"></button>
             </div>
+            <button id="btn-toggle-visibility" class="tool-btn visibility-btn" onclick="toggleTagsVisibility()"
+                title="Toggle Tag Visibility">👁</button>
             <button class="tool-btn danger" onclick="clearCanvas()" title="Clear Canvas">🗑</button>
+            <button class="tool-btn danger" onclick="resetGame()" title="Reset Game"
+                style="margin-top: 1rem;">Reset</button>
         </div>
 
         <!-- Phase Info Panel (Top Right) -->
@@ -82,8 +90,26 @@
                 <div id="phase-prompt" class="prompt-box">
                     <strong>Action:</strong> <span id="prompt-text">Do something...</span>
                 </div>
+                <!-- Tags Container -->
+                <div id="phase-tags" class="tag-container hidden"></div>
             </div>
-            <button id="btn-next-phase" class="btn-secondary" onclick="nextPhase()">NEXT PHASE ➔</button>
+            <div class="phase-controls">
+                <button id="btn-prev-phase" class="btn-secondary" onclick="prevPhase()">BACK</button>
+                <button id="btn-next-phase" class="btn-secondary" onclick="nextPhase()">NEXT PHASE ➔</button>
+            </div>
+        </div>
+
+        <!-- Truths Panel (Draggable & Collapsible) -->
+        <div id="truths-panel" class="ui-panel draggable-panel">
+            <div class="drag-handle">
+                <span id="truths-title-ui">TRUTHS</span>
+                <button class="toggle-btn" onclick="toggleTruths()" title="Toggle Panel">−</button>
+            </div>
+            <div id="truths-content" class="panel-content scrollable">
+                <ul id="truths-list">
+                    <!-- Truths injected via JS -->
+                </ul>
+            </div>
         </div>
 
         <!-- Card Dislay (Bottom Center) -->
